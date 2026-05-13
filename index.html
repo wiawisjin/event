@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>WIAWIS LUCKY DRAW</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--sf:#141414;--sf2:#1e1e1e;--bd:#2a2a2a;--tx:#f5f5f5;--dim:#888;--ac:#e63956;--acg:rgba(230,57,86,.25);--acs:rgba(230,57,86,.1);--gold:#d4a853;--silver:#a8b4c0}
+html,body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(230,57,86,.06) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(230,57,86,.04) 0%,transparent 50%);pointer-events:none}
+.ct{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 20px 40px;display:flex;flex-direction:column;min-height:100dvh}
+.hd{text-align:center;padding:48px 0 32px}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--ac);border:1px solid rgba(230,57,86,.3);padding:6px 16px;border-radius:100px;margin-bottom:20px}
+.hd h1{font-size:32px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
+.hd h1 span{background:linear-gradient(135deg,var(--ac),#ff6b8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hd .sub{font-size:14px;color:var(--dim)}
+.badge{display:none;margin:16px auto 0;padding:8px 16px;background:var(--sf);border:1px solid var(--bd);border-radius:100px;font-size:13px;font-weight:600;color:var(--dim)}
+.badge .dot{display:inline-block;width:8px;height:8px;background:var(--ac);border-radius:50%;margin-right:6px;animation:pulse 2s infinite;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.draw-sec{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0}
+.draw-btn{position:relative;width:200px;height:200px;border-radius:50%;border:2px solid var(--ac);background:radial-gradient(circle at 40% 35%,#1f1f1f,#0e0e0e);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 40px var(--acg),inset 0 0 40px rgba(230,57,86,.05);user-select:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.draw-btn:active{transform:scale(.94)}
+.draw-btn .ico{font-size:36px}
+.draw-btn .lbl{font-size:16px;font-weight:800;letter-spacing:2px}
+.draw-btn .slbl{font-size:11px;color:var(--dim)}
+.draw-btn::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(230,57,86,.15);animation:ring 2.5s ease-out infinite}
+@keyframes ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.15);opacity:0}}
+.draw-btn.spin{pointer-events:none;animation:sp 1.8s cubic-bezier(.45,0,.15,1)}
+.draw-btn.spin::after{display:none}
+@keyframes sp{0%{transform:scale(1) rotate(0)}50%{transform:scale(.85) rotate(360deg)}75%{transform:scale(1.08) rotate(540deg)}100%{transform:scale(1) rotate(720deg)}}
+.hint{margin-top:24px;font-size:13px;color:var(--dim);text-align:center}
+
+/* Loading */
+.loading{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dim)}
+.loading::after{content:'';width:24px;height:24px;border:2px solid var(--bd);border-top-color:var(--ac);border-radius:50%;margin-left:12px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Overlay */
+.ov{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:24px}
+.ov.on{display:flex}
+.rc{width:100%;max-width:380px;background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:40px 28px;text-align:center;animation:ri .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes ri{from{transform:translateY(30px) scale(.95);opacity:0}to{transform:none;opacity:1}}
+.rc .em{font-size:64px;margin-bottom:16px}
+.rc h2{font-size:28px;font-weight:800;margin-bottom:8px}
+.rc .pn{font-size:18px;font-weight:600;color:var(--ac);margin-bottom:20px}
+.rc p{font-size:14px;color:var(--dim);line-height:1.7;margin-bottom:24px}
+.rc.w1 h2{color:var(--gold)}
+.rc.w2 h2{color:var(--silver)}
+.gb{background:var(--acs);border:1px solid rgba(230,57,86,.2);border-radius:12px;padding:16px;margin-bottom:24px}
+.gb p{color:var(--tx)!important;font-size:13px!important;font-weight:600;margin:0!important}
+.cbtn{display:inline-block;padding:14px 40px;background:var(--ac);color:#fff;font-size:15px;font-weight:700;border:none;border-radius:100px;cursor:pointer;font-family:inherit;transition:transform .2s}
+.cbtn:active{transform:scale(.96)}
+.ig{display:flex;align-items:center;gap:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;margin-bottom:24px;text-decoration:none;color:var(--tx);transition:border-color .2s}
+.ig:hover{border-color:var(--ac)}
+.ig-i{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ig b{font-size:15px;display:block}
+.ig small{font-size:12px;color:var(--dim);margin-top:2px;display:block}
+
+/* Cooldown */
+.cd{text-align:center;padding:40px 0}
+.cd .lk{font-size:48px;opacity:.6}
+.cd h3{font-size:20px;font-weight:700;margin:16px 0 8px}
+.cd p{font-size:14px;color:var(--dim);line-height:1.6}
+.tm{display:inline-block;margin-top:16px;padding:10px 24px;background:var(--sf);border:1px solid var(--bd);border-radius:100px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:2px}
+
+/* No-bike */
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0}
+.nb h3{font-size:18px;font-weight:700;margin:16px 0 8px}
+.nb p{font-size:14px;color:var(--dim);line-height:1.6}
+
+/* Error */
+.err{text-align:center;padding:40px 0}
+.err h3{font-size:18px;font-weight:700;margin:16px 0 8px}
+.err p{font-size:14px;color:var(--dim);line-height:1.6;margin-bottom:20px}
+.retry-btn{padding:12px 32px;background:var(--sf);border:1px solid var(--bd);border-radius:100px;color:var(--tx);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* Admin Panel */
+.adm{display:none;margin-top:24px}
+.adm.on{display:block}
+.adm-card{background:var(--sf);border:1px solid rgba(230,57,86,.3);border-radius:16px;padding:24px}
+.adm-tit{font-size:14px;font-weight:700;color:var(--ac);margin-bottom:16px}
+.adm-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}
+.adm-row:last-of-type{border-bottom:none}
+.adm-name{font-size:14px;font-weight:600}
+.adm-sub{font-size:11px;color:var(--dim)}
+.adm-nums{text-align:right}
+.adm-stock{font-size:16px;font-weight:700}
+.adm-stock.z{color:var(--ac)}
+.adm-detail{font-size:11px;color:var(--dim)}
+.adm-stat{margin-top:16px;padding-top:16px;border-top:1px solid var(--bd);font-size:13px;color:var(--dim)}
+.adm-log{margin-top:12px;max-height:200px;overflow-y:auto;font-size:11px;color:var(--dim);line-height:1.8;padding:12px;background:var(--bg);border-radius:10px}
+.adm-refresh{margin-top:12px;width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* Keyword Input */
+.kw-ov{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);padding:24px}
+.kw-ov.on{display:flex}
+.kw-box{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:32px 24px;text-align:center;width:100%;max-width:320px}
+.kw-box h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.kw-input{width:100%;padding:12px 16px;background:var(--sf2);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-size:16px;text-align:center;font-family:inherit;margin-bottom:12px}
+.kw-input:focus{outline:none;border-color:var(--ac)}
+.kw-input::placeholder{color:var(--dim)}
+.kw-btns{display:flex;gap:8px}
+.kw-btns button{flex:1;padding:12px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;border:none}
+.kw-ok{background:var(--ac);color:#fff}
+.kw-cancel{background:var(--sf2);color:var(--dim);border:1px solid var(--bd)!important}
+.kw-err{color:var(--ac);font-size:12px;margin-bottom:8px;min-height:18px}
+
+.ft{text-align:center;padding:24px 0 8px;font-size:11px;color:var(--dim);opacity:.5;cursor:default;user-select:none}
+#confCanvas{position:fixed;inset:0;z-index:150;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="ct">
+  <div class="hd">
+    <div class="tag">WIAWIS</div>
+    <h1 id="evtName">LUCKY <span>DRAW</span></h1>
+    <p class="sub" id="evtDesc">로딩 중...</p>
+    <div class="badge" id="badge"><span class="dot"></span><span id="bikeL">BIKE #1</span></div>
+  </div>
+
+  <div id="main"><div class="loading">불러오는 중</div></div>
+
+  <div class="adm" id="admPanel">
+    <div class="adm-card">
+      <div class="adm-tit">🔧 관리자 현황</div>
+      <div id="admPrizes"></div>
+      <div class="adm-stat" id="admStat"></div>
+      <div class="adm-log" id="admLog"></div>
+      <button class="adm-refresh" id="admRefresh">🔄 새로고침</button>
+    </div>
+  </div>
+
+  <div class="ft" id="footer">© WIAWIS by Win&Win Co.</div>
+</div>
+
+<!-- Result Overlay -->
+<div class="ov" id="overlay"><div class="rc" id="resCard"></div></div>
+
+<!-- Keyword Overlay -->
+<div class="kw-ov" id="kwOverlay">
+  <div class="kw-box">
+    <h3>🔒 관리자 인증</h3>
+    <div class="kw-err" id="kwErr"></div>
+    <input type="password" class="kw-input" id="kwInput" placeholder="키워드 입력">
+    <div class="kw-btns">
+      <button class="kw-cancel" id="kwCancel">취소</button>
+      <button class="kw-ok" id="kwOk">확인</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="confCanvas"></canvas>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ══════════════════════════════════════
+   *  ⚠️ 아래 GAS_URL을 배포된 웹앱 URL로 교체하세요
+   * ══════════════════════════════════════ */
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycby_w5m5C0DxhxZwKtD1hoSl0QCf3CNOtNCTfCcm1KEHTuvcQUDwMdIhNzlq0zPk1nGM/exec';
+
+  /* ── 관리자 키워드 (원하는 값으로 변경) ── */
+  var ADMIN_KEYWORD = 'wiawis2026';
+
+  /* ── URL 파라미터 파싱 ── */
+  var href = window.location.href;
+  var bikeId = null;
+  var qi = href.indexOf('?');
+  if (qi > -1) {
+    var pairs = href.substring(qi + 1).split('&');
+    for (var i = 0; i < pairs.length; i++) {
+      var kv = pairs[i].split('=');
+      if (kv[0] === 'bike') bikeId = decodeURIComponent(kv[1]);
+    }
+  }
+
+  /* ── 기기 ID (localStorage) ── */
+  var DID_KEY = 'wdraw_device_id';
+  var deviceId = localStorage.getItem(DID_KEY);
+  if (!deviceId) {
+    deviceId = 'D' + Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+    localStorage.setItem(DID_KEY, deviceId);
+  }
+
+  /* ── DOM ── */
+  var $ = function(id) { return document.getElementById(id); };
+  var H = 'innerHTML';
+  var mainEl = $('main');
+  var cooldownIv = null;
+
+  /* ── 바이크 배지 ── */
+  if (bikeId) {
+    $('badge').style.display = 'inline-block';
+    $('bikeL').textContent = 'BIKE #' + bikeId;
+  }
+
+  /* ── API 호출 헬퍼 ── */
+  function apiGet(params) {
+    var qs = Object.keys(params).map(function(k) { return k + '=' + encodeURIComponent(params[k]); }).join('&');
+    return fetch(GAS_URL + '?' + qs).then(function(r) { return r.json(); });
+  }
+  function apiPost(data) {
+    return fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    }).then(function(r) { return r.json(); });
+  }
+
+  /* ══════════════════════════════════════
+   *  초기 로딩
+   * ══════════════════════════════════════ */
+  function init() {
+    if (!bikeId) {
+      $('evtDesc').textContent = '시승 후 행운의 추첨에 도전하세요!';
+      mainEl[H] = '<div class="nb"><div style="font-size:48px;opacity:.5">🚲</div><h3>시승 자전거를 선택해주세요</h3><p>QR 코드를 스캔하면<br>자동으로 자전거가 배정됩니다.</p></div>';
+      return;
+    }
+
+    mainEl[H] = '<div class="loading">불러오는 중</div>';
+
+    apiGet({ action: 'init', deviceId: deviceId, bike: bikeId })
+      .then(function(data) {
+        if (data.error) { showError(data.error); return; }
+        $('evtDesc').textContent = data.settings.eventDesc || '';
+        if (data.canPlay) {
+          showDraw();
+        } else {
+          showCooldown(data.remainSec);
+        }
+      })
+      .catch(function(err) { showError('서버에 연결할 수 없습니다.'); });
+  }
+
+  /* ── 추첨 화면 ── */
+  function showDraw() {
+    mainEl[H] = '<div class="draw-sec"><div class="draw-btn" id="dBtn"><span class="ico">🎯</span><span class="lbl">DRAW</span><span class="slbl">터치하여 추첨</span></div><p class="hint">버튼을 눌러 행운을 시험해보세요!</p></div>';
+    $('dBtn').onclick = doDraw;
+  }
+
+  /* ── 추첨 실행 ── */
+  function doDraw() {
+    var btn = $('dBtn');
+    if (!btn || btn.className.indexOf('spin') > -1) return;
+    btn.className = 'draw-btn spin';
+
+    apiPost({ action: 'draw', deviceId: deviceId, bike: bikeId })
+      .then(function(data) {
+        if (data.error) { showError(data.error); return; }
+        if (!data.success && data.reason === 'cooldown') {
+          showCooldown(data.remainSec);
+          return;
+        }
+        showResult(data.result);
+      })
+      .catch(function(err) {
+        showError('추첨 중 오류가 발생했습니다.');
+      });
+  }
+
+  /* ── 결과 표시 ── */
+  function showResult(res) {
+    var ov = $('overlay'), card = $('resCard');
+
+    if (res.type === 'miss') {
+      card.className = 'rc';
+      card[H] = '<div class="em">😅</div><h2>아쉽지만 다음 기회에!</h2><p>이번엔 아쉽게 당첨되지 않았어요.<br>팔로우하고 다음 이벤트 소식 받아보세요!</p><a href="https://www.instagram.com/wiawis_bike/" target="_blank" class="ig"><div class="ig-i">📸</div><div><b>@wiawis_bike</b><small>팔로우하고 이벤트 소식 받기 →</small></div></a><button class="cbtn" id="cBtn">확인</button>';
+    } else {
+      var idx = parseInt(res.rank) || 1;
+      var cls = idx === 1 ? 'w1' : idx === 2 ? 'w2' : '';
+      card.className = 'rc ' + cls;
+      card[H] = '<div class="em">' + (res.emoji || '🎁') + '</div><h2>🎉 축하합니다!</h2><div class="pn">' + res.rank + ' — ' + res.name + '</div><div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div><p>화면 캡처 후 부스 스태프에게 보여주세요.</p><button class="cbtn" id="cBtn">확인</button>';
+      fireConfetti();
+    }
+
+    ov.classList.add('on');
+    setTimeout(function() {
+      $('cBtn').onclick = function() { ov.classList.remove('on'); init(); };
+    }, 50);
+  }
+
+  /* ── 쿨다운 ── */
+  function showCooldown(sec) {
+    if (cooldownIv) clearInterval(cooldownIv);
+    var remain = sec;
+    mainEl[H] = '<div class="cd"><div class="lk">🔒</div><h3>이미 참여하셨습니다</h3><p>BIKE #' + bikeId + ' 추첨 완료!<br>재참여까지 남은 시간:</p><div class="tm" id="timer">--:--:--</div></div>';
+
+    function tick() {
+      if (remain <= 0) { clearInterval(cooldownIv); cooldownIv = null; init(); return; }
+      var h = Math.floor(remain / 3600), m = Math.floor((remain % 3600) / 60), s = remain % 60;
+      var pad = function(n) { return (n < 10 ? '0' : '') + n; };
+      var el = $('timer');
+      if (el) el.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+      remain--;
+    }
+    tick();
+    cooldownIv = setInterval(tick, 1000);
+  }
+
+  /* ── 에러 ── */
+  function showError(msg) {
+    mainEl[H] = '<div class="err"><div style="font-size:48px;opacity:.5">⚠️</div><h3>오류가 발생했습니다</h3><p>' + msg + '</p><button class="retry-btn" id="retryBtn">다시 시도</button></div>';
+    $('retryBtn').onclick = init;
+  }
+
+  /* ══════════════════════════════════════
+   *  숨겨진 관리자 모드 (푸터 5번 탭)
+   * ══════════════════════════════════════ */
+  var tapCount = 0, tapTimer = null;
+
+  $('footer').addEventListener('click', function() {
+    tapCount++;
+    if (tapTimer) clearTimeout(tapTimer);
+    tapTimer = setTimeout(function() { tapCount = 0; }, 2000);
+
+    if (tapCount >= 5) {
+      tapCount = 0;
+      if ($('admPanel').classList.contains('on')) {
+        $('admPanel').classList.remove('on');
+      } else {
+        showKeywordPrompt();
+      }
+    }
+  });
+
+  function showKeywordPrompt() {
+    var ov = $('kwOverlay');
+    var inp = $('kwInput');
+    $('kwErr').textContent = '';
+    inp.value = '';
+    ov.classList.add('on');
+    setTimeout(function() { inp.focus(); }, 100);
+  }
+
+  $('kwCancel').onclick = function() { $('kwOverlay').classList.remove('on'); };
+  $('kwOk').onclick = checkKeyword;
+  $('kwInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') checkKeyword(); });
+
+  function checkKeyword() {
+    var val = $('kwInput').value.trim();
+    if (val === ADMIN_KEYWORD) {
+      $('kwOverlay').classList.remove('on');
+      $('admPanel').classList.add('on');
+      loadAdminStatus();
+    } else {
+      $('kwErr').textContent = '키워드가 올바르지 않습니다.';
+      $('kwInput').value = '';
+      $('kwInput').focus();
+    }
+  }
+
+  /* ── 관리자 현황 로드 ── */
+  function loadAdminStatus() {
+    $('admPrizes')[H] = '<div style="color:var(--dim);font-size:13px;padding:12px 0">로딩 중...</div>';
+    $('admLog')[H] = '';
+    $('admStat')[H] = '';
+
+    apiGet({ action: 'status' })
+      .then(function(data) {
+        if (data.error) { $('admPrizes')[H] = '<div style="color:var(--ac)">오류: ' + data.error + '</div>'; return; }
+
+        // 경품 현황
+        var html = '';
+        for (var i = 0; i < data.prizes.length; i++) {
+          var p = data.prizes[i];
+          html += '<div class="adm-row"><div><div class="adm-name">' + p.emoji + ' ' + p.rank + '</div><div class="adm-sub">' + p.name + ' (확률 ' + p.prob + '%)</div></div><div class="adm-nums"><div class="adm-stock' + (p.remaining === 0 ? ' z' : '') + '">' + p.remaining + '/' + p.stock + '</div><div class="adm-detail">소모 ' + p.consumed + '개</div></div></div>';
+        }
+        $('admPrizes')[H] = html;
+
+        // 통계
+        $('admStat')[H] = '📊 총 추첨 횟수: <b style="color:var(--tx)">' + data.totalDraws + '회</b>';
+
+        // 최근 로그
+        if (data.recentLogs.length > 0) {
+          var logHtml = '';
+          for (var j = 0; j < data.recentLogs.length; j++) {
+            var l = data.recentLogs[j];
+            logHtml += '[' + l.time + '] BIKE#' + l.bike + ' ' + l.device + '... → ' + l.result + (l.prize ? ' (' + l.prize + ')' : '') + '<br>';
+          }
+          $('admLog')[H] = logHtml;
+        } else {
+          $('admLog')[H] = '<span style="opacity:.5">로그가 없습니다.</span>';
+        }
+      })
+      .catch(function() {
+        $('admPrizes')[H] = '<div style="color:var(--ac)">서버 연결 실패</div>';
+      });
+  }
+
+  $('admRefresh').onclick = loadAdminStatus;
+
+  /* ══════════════════════════════════════
+   *  컨페티 효과
+   * ══════════════════════════════════════ */
+  function fireConfetti() {
+    var cv = $('confCanvas'), ctx = cv.getContext('2d');
+    cv.width = window.innerWidth; cv.height = window.innerHeight;
+    var ps = [], colors = ['#e63956','#ff6b8a','#d4a853','#f5f5f5','#ff4466','#ffb347'];
+    for (var i = 0; i < 80; i++) {
+      ps.push({ x:cv.width/2+(Math.random()-.5)*100, y:cv.height/2,
+        vx:(Math.random()-.5)*16, vy:Math.random()*-18-4,
+        w:Math.random()*10+4, h:Math.random()*6+3,
+        c:colors[Math.floor(Math.random()*colors.length)],
+        r:Math.random()*360, rs:(Math.random()-.5)*12,
+        g:.3+Math.random()*.2, o:1 });
+    }
+    var fr = 0;
+    (function anim() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      var alive = false;
+      for (var i = 0; i < ps.length; i++) {
+        var p = ps[i];
+        p.x += p.vx; p.vy += p.g; p.y += p.vy; p.r += p.rs;
+        if (fr > 40) p.o -= .015;
+        if (p.o <= 0) continue;
+        alive = true;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI / 180);
+        ctx.globalAlpha = Math.max(0, p.o); ctx.fillStyle = p.c;
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+      }
+      fr++;
+      if (alive && fr < 200) requestAnimationFrame(anim);
+      else ctx.clearRect(0, 0, cv.width, cv.height);
+    })();
+  }
+
+  /* ── Start ── */
+  init();
+
+})();
+</script>
+</body>
+</html>
