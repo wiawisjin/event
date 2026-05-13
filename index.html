@@ -275,7 +275,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       var idx = parseInt(res.rank) || 1;
       var cls = idx === 1 ? 'w1' : idx === 2 ? 'w2' : '';
       card.className = 'rc ' + cls;
-      card[H] = '<div class="em">' + (res.emoji || '🎁') + '</div><h2>🎉 축하합니다!</h2><div class="pn">' + res.rank + ' — ' + res.name + '</div><div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div><p>화면 캡처 후 부스 스태프에게 보여주세요.</p><button class="cbtn" id="cBtn">확인</button>';
+      card[H] = '<div class="em">' + (res.emoji || '🎁') + '</div><h2>🎉 축하합니다!</h2><div class="pn">' + res.rank + ' — ' + res.name + '</div><div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div><p>부스 스태프에게 보여주세요.</p><button class="cbtn" id="cBtn">확인</button>';
       fireConfetti();
     }
 
@@ -289,7 +289,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   function showCooldown(sec) {
     if (cooldownIv) clearInterval(cooldownIv);
     var remain = sec;
-    mainEl[H] = '<div class="cd"><div class="lk">🔒</div><h3>이미 참여하셨습니다</h3><p>BIKE #' + bikeId + ' 추첨 완료!<br>재참여까지 남은 시간:</p><div class="tm" id="timer">--:--:--</div></div>';
+    mainEl[H] = '<div class="cd"><div class="lk">🔒</div><h3>이미 참여하셨습니다</h3></div></div>';
 
     function tick() {
       if (remain <= 0) { clearInterval(cooldownIv); cooldownIv = null; init(); return; }
