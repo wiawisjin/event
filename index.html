@@ -13,13 +13,10 @@ html,body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSys
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(230,57,86,.06) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(230,57,86,.04) 0%,transparent 50%);pointer-events:none}
 .ct{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 20px 40px;display:flex;flex-direction:column;min-height:100dvh}
 .hd{text-align:center;padding:48px 0 32px}
-.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--ac);border:1px solid rgba(230,57,86,.3);padding:6px 16px;border-radius:100px;margin-bottom:20px}
+.hd-logo{height:32px;margin-bottom:20px}
 .hd h1{font-size:32px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
 .hd h1 span{background:linear-gradient(135deg,var(--ac),#ff6b8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hd .sub{font-size:14px;color:var(--dim)}
-.badge{display:none;margin:16px auto 0;padding:8px 16px;background:var(--sf);border:1px solid var(--bd);border-radius:100px;font-size:13px;font-weight:600;color:var(--dim)}
-.badge .dot{display:inline-block;width:8px;height:8px;background:var(--ac);border-radius:50%;margin-right:6px;animation:pulse 2s infinite;vertical-align:middle}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
 .draw-sec{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0}
 .draw-btn{position:relative;width:200px;height:200px;border-radius:50%;border:2px solid var(--ac);background:radial-gradient(circle at 40% 35%,#1f1f1f,#0e0e0e);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 40px var(--acg),inset 0 0 40px rgba(230,57,86,.05);user-select:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
@@ -117,10 +114,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <div class="ct">
   <div class="hd">
-    <div class="tag">WIAWIS</div>
-    <h1 id="evtName">LUCKY <span>DRAW</span></h1>
+    <img src="https://wiawis.com/upload/editor/202512344152326xiqlB4h2ov.png" alt="WIAWIS" class="hd-logo">
+    <h1>LUCKY <span>DRAW</span></h1>
     <p class="sub" id="evtDesc">로딩 중...</p>
-    <div class="badge" id="badge"><span class="dot"></span><span id="bikeL">BIKE #1</span></div>
   </div>
 
   <div id="main"><div class="loading">불러오는 중</div></div>
@@ -193,12 +189,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   var H = 'innerHTML';
   var mainEl = $('main');
   var cooldownIv = null;
-
-  /* ── 바이크 배지 ── */
-  if (bikeId) {
-    $('badge').style.display = 'inline-block';
-    $('bikeL').textContent = 'BIKE #' + bikeId;
-  }
 
   /* ── API 호출 헬퍼 ── */
   function apiGet(params) {
@@ -289,7 +279,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   function showCooldown(sec) {
     if (cooldownIv) clearInterval(cooldownIv);
     var remain = sec;
-    mainEl[H] = '<div class="cd"><div class="lk">🔒</div><h3>이미 참여하셨습니다</h3></div></div>';
+    mainEl[H] = '<div class="cd"><div class="lk">🔒</div><h3>이미 참여하셨습니다</h3><p>재참여까지 남은 시간:</p><div class="tm" id="timer">--:--:--</div></div>';
 
     function tick() {
       if (remain <= 0) { clearInterval(cooldownIv); cooldownIv = null; init(); return; }
@@ -365,7 +355,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       .then(function(data) {
         if (data.error) { $('admPrizes')[H] = '<div style="color:var(--ac)">오류: ' + data.error + '</div>'; return; }
 
-        // 경품 현황
         var html = '';
         for (var i = 0; i < data.prizes.length; i++) {
           var p = data.prizes[i];
@@ -373,10 +362,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         }
         $('admPrizes')[H] = html;
 
-        // 통계
         $('admStat')[H] = '📊 총 추첨 횟수: <b style="color:var(--tx)">' + data.totalDraws + '회</b>';
 
-        // 최근 로그
         if (data.recentLogs.length > 0) {
           var logHtml = '';
           for (var j = 0; j < data.recentLogs.length; j++) {
