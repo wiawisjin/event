@@ -12,13 +12,27 @@
 html,body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tx);min-height:100dvh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(230,57,86,.06) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(230,57,86,.04) 0%,transparent 50%);pointer-events:none}
 .ct{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 20px 40px;display:flex;flex-direction:column;min-height:100dvh}
-.hd{text-align:center;padding:48px 0 32px}
+.hd{text-align:center;padding:48px 0 24px}
 .hd-logo{height:32px;margin-bottom:20px}
 .hd h1{font-size:32px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
 .hd h1 span{background:linear-gradient(135deg,var(--ac),#ff6b8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hd .sub{font-size:14px;color:var(--dim)}
 
-.draw-sec{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 0}
+/* Prize List */
+.prize-list{margin:0 0 8px;padding:0}
+.prize-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.prize-left{display:flex;align-items:center;gap:12px}
+.prize-emoji{font-size:28px}
+.prize-rank{font-size:13px;font-weight:700;color:var(--ac)}
+.prize-name{font-size:13px;color:var(--dim);margin-top:2px}
+.prize-remain{text-align:right}
+.prize-count{font-size:16px;font-weight:700}
+.prize-count.z{color:var(--ac)}
+.prize-label{font-size:10px;color:var(--dim);margin-top:2px}
+.prize-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:12px}
+
+/* Draw Section */
+.draw-sec{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 0}
 .draw-btn{position:relative;width:200px;height:200px;border-radius:50%;border:2px solid var(--ac);background:radial-gradient(circle at 40% 35%,#1f1f1f,#0e0e0e);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 40px var(--acg),inset 0 0 40px rgba(230,57,86,.05);user-select:none;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
 .draw-btn:active{transform:scale(.94)}
 .draw-btn .ico{font-size:36px}
@@ -26,10 +40,17 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .draw-btn .slbl{font-size:11px;color:var(--dim)}
 .draw-btn::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(230,57,86,.15);animation:ring 2.5s ease-out infinite}
 @keyframes ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.15);opacity:0}}
-.draw-btn.spin{pointer-events:none;animation:sp 1.8s cubic-bezier(.45,0,.15,1)}
+
+/* Spin: 무한 루프 (API 응답까지) */
+.draw-btn.spin{pointer-events:none;animation:spinLoop .8s linear infinite;box-shadow:0 0 60px var(--acg)}
 .draw-btn.spin::after{display:none}
-@keyframes sp{0%{transform:scale(1) rotate(0)}50%{transform:scale(.85) rotate(360deg)}75%{transform:scale(1.08) rotate(540deg)}100%{transform:scale(1) rotate(720deg)}}
-.hint{margin-top:24px;font-size:13px;color:var(--dim);text-align:center}
+@keyframes spinLoop{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* Spin 종료: 감속 후 정지 */
+.draw-btn.spin-end{pointer-events:none;animation:spinEnd .6s cubic-bezier(.15,0,.4,1) forwards}
+@keyframes spinEnd{from{transform:rotate(0) scale(.9)}to{transform:rotate(180deg) scale(1)}}
+
+.hint{margin-top:20px;font-size:13px;color:var(--dim);text-align:center}
 
 /* Loading */
 .loading{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dim)}
@@ -51,7 +72,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .gb p{color:var(--tx)!important;font-size:13px!important;font-weight:600;margin:0!important}
 .cbtn{display:inline-block;padding:14px 40px;background:var(--ac);color:#fff;font-size:15px;font-weight:700;border:none;border-radius:100px;cursor:pointer;font-family:inherit;transition:transform .2s}
 .cbtn:active{transform:scale(.96)}
-.ig{display:flex;align-items:center;gap:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;margin-bottom:24px;text-decoration:none;color:var(--tx);transition:border-color .2s}
+.ig{display:flex;align-items:center;gap:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;margin-bottom:16px;text-decoration:none;color:var(--tx);transition:border-color .2s}
 .ig:hover{border-color:var(--ac)}
 .ig-i{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .ig b{font-size:15px;display:block}
@@ -134,10 +155,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="ft" id="footer">© WIAWIS by Win&Win Co.</div>
 </div>
 
-<!-- Result Overlay -->
 <div class="ov" id="overlay"><div class="rc" id="resCard"></div></div>
 
-<!-- Keyword Overlay -->
 <div class="kw-ov" id="kwOverlay">
   <div class="kw-box">
     <h3>🔒 관리자 인증</h3>
@@ -161,8 +180,22 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
    * ══════════════════════════════════════ */
   var GAS_URL = 'https://script.google.com/macros/s/AKfycby_w5m5C0DxhxZwKtD1hoSl0QCf3CNOtNCTfCcm1KEHTuvcQUDwMdIhNzlq0zPk1nGM/exec';
 
-  /* ── 관리자 키워드 (원하는 값으로 변경) ── */
   var ADMIN_KEYWORD = 'wiawis2026';
+  var INSTA_USER = 'wiawis_bike';
+
+  /* ── 인스타그램 딥링크 (OS별 분기) ── */
+  function getInstaUrl() {
+    var ua = navigator.userAgent || '';
+    if (/iPhone|iPad|iPod/i.test(ua)) {
+      return 'instagram://user?username=' + INSTA_USER;
+    }
+    if (/Android/i.test(ua)) {
+      return 'intent://www.instagram.com/' + INSTA_USER + '/#Intent;package=com.instagram.android;scheme=https;end';
+    }
+    return 'https://www.instagram.com/' + INSTA_USER + '/';
+  }
+  var instaUrl = getInstaUrl();
+  var instaFallback = 'https://www.instagram.com/' + INSTA_USER + '/';
 
   /* ── URL 파라미터 파싱 ── */
   var href = window.location.href;
@@ -176,7 +209,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     }
   }
 
-  /* ── 기기 ID (localStorage) ── */
+  /* ── 기기 ID ── */
   var DID_KEY = 'wdraw_device_id';
   var deviceId = localStorage.getItem(DID_KEY);
   if (!deviceId) {
@@ -189,8 +222,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   var H = 'innerHTML';
   var mainEl = $('main');
   var cooldownIv = null;
+  var cachedPrizes = []; // init에서 받은 경품 목록 캐싱
 
-  /* ── API 호출 헬퍼 ── */
+  /* ── API ── */
   function apiGet(params) {
     var qs = Object.keys(params).map(function(k) { return k + '=' + encodeURIComponent(params[k]); }).join('&');
     return fetch(GAS_URL + '?' + qs).then(function(r) { return r.json(); });
@@ -201,6 +235,45 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(data)
     }).then(function(r) { return r.json(); });
+  }
+
+  /* ── 인스타 링크 클릭 핸들러 (딥링크 → fallback) ── */
+  function handleInstaClick(e) {
+    var ua = navigator.userAgent || '';
+    if (/iPhone|iPad|iPod|Android/i.test(ua)) {
+      e.preventDefault();
+      var opened = Date.now();
+      window.location.href = instaUrl;
+      setTimeout(function() {
+        if (Date.now() - opened < 2000) {
+          window.location.href = instaFallback;
+        }
+      }, 1500);
+    }
+  }
+
+  /* ── 인스타 CTA HTML ── */
+  function instaHtml() {
+    return '<a href="' + instaFallback + '" target="_blank" class="ig" id="igLink"><div class="ig-i">📸</div><div><b>@' + INSTA_USER + '</b><small>팔로우하고 이벤트 소식 받기 →</small></div></a>';
+  }
+
+  function bindInstaLink() {
+    var el = $('igLink');
+    if (el) el.addEventListener('click', handleInstaClick);
+  }
+
+  /* ══════════════════════════════════════
+   *  경품 리스트 HTML
+   * ══════════════════════════════════════ */
+  function prizeListHtml(prizes) {
+    if (!prizes || prizes.length === 0) return '';
+    var html = '<div class="prize-title">🎁 오늘의 경품</div><div class="prize-list">';
+    for (var i = 0; i < prizes.length; i++) {
+      var p = prizes[i];
+      html += '<div class="prize-card"><div class="prize-left"><div class="prize-emoji">' + (p.emoji || '🎁') + '</div><div><div class="prize-rank">' + p.rank + '</div><div class="prize-name">' + p.name + '</div></div></div><div class="prize-remain"><div class="prize-count' + (p.remaining === 0 ? ' z' : '') + '">' + p.remaining + '</div><div class="prize-label">남음</div></div></div>';
+    }
+    html += '</div>';
+    return html;
   }
 
   /* ══════════════════════════════════════
@@ -219,37 +292,52 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       .then(function(data) {
         if (data.error) { showError(data.error); return; }
         $('evtDesc').textContent = data.settings.eventDesc || '';
+        cachedPrizes = data.prizes || [];
         if (data.canPlay) {
           showDraw();
         } else {
           showCooldown(data.remainSec);
         }
       })
-      .catch(function(err) { showError('서버에 연결할 수 없습니다.'); });
+      .catch(function() { showError('서버에 연결할 수 없습니다.'); });
   }
 
-  /* ── 추첨 화면 ── */
+  /* ── 추첨 화면 (경품 리스트 포함) ── */
   function showDraw() {
-    mainEl[H] = '<div class="draw-sec"><div class="draw-btn" id="dBtn"><span class="ico">🎯</span><span class="lbl">DRAW</span><span class="slbl">터치하여 추첨</span></div><p class="hint">버튼을 눌러 행운을 시험해보세요!</p></div>';
+    mainEl[H] = prizeListHtml(cachedPrizes) + '<div class="draw-sec"><div class="draw-btn" id="dBtn"><span class="ico">🎯</span><span class="lbl">DRAW</span><span class="slbl">터치하여 추첨</span></div><p class="hint">버튼을 눌러 행운을 시험해보세요!</p></div>';
     $('dBtn').onclick = doDraw;
   }
 
-  /* ── 추첨 실행 ── */
+  /* ── 추첨 실행 (API 응답까지 스핀) ── */
   function doDraw() {
     var btn = $('dBtn');
-    if (!btn || btn.className.indexOf('spin') > -1) return;
-    btn.className = 'draw-btn spin';
+    if (!btn || btn.classList.contains('spin')) return;
+    btn.classList.add('spin');
+
+    var startTime = Date.now();
+    var MIN_SPIN = 1500; // 최소 스핀 시간 (ms)
 
     apiPost({ action: 'draw', deviceId: deviceId, bike: bikeId })
       .then(function(data) {
-        if (data.error) { showError(data.error); return; }
-        if (!data.success && data.reason === 'cooldown') {
-          showCooldown(data.remainSec);
-          return;
-        }
-        showResult(data.result);
+        var elapsed = Date.now() - startTime;
+        var delay = Math.max(0, MIN_SPIN - elapsed);
+
+        setTimeout(function() {
+          btn.classList.remove('spin');
+          btn.classList.add('spin-end');
+
+          setTimeout(function() {
+            if (data.error) { showError(data.error); return; }
+            if (!data.success && data.reason === 'cooldown') {
+              showCooldown(data.remainSec);
+              return;
+            }
+            showResult(data.result);
+          }, 600);
+        }, delay);
       })
-      .catch(function(err) {
+      .catch(function() {
+        btn.classList.remove('spin');
         showError('추첨 중 오류가 발생했습니다.');
       });
   }
@@ -260,17 +348,18 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     if (res.type === 'miss') {
       card.className = 'rc';
-      card[H] = '<div class="em">😅</div><h2>아쉽지만 다음 기회에!</h2><p>이번엔 아쉽게 당첨되지 않았어요.<br>팔로우하고 다음 이벤트 소식 받아보세요!</p><a href="https://www.instagram.com/wiawis_bike/" target="_blank" class="ig"><div class="ig-i">📸</div><div><b>@wiawis_bike</b><small>팔로우하고 이벤트 소식 받기 →</small></div></a><button class="cbtn" id="cBtn">확인</button>';
+      card[H] = '<div class="em">😅</div><h2>아쉽지만 다음 기회에!</h2><p>이번엔 아쉽게 당첨되지 않았어요.<br>팔로우하고 다음 이벤트 소식 받아보세요!</p>' + instaHtml() + '<button class="cbtn" id="cBtn">확인</button>';
     } else {
       var idx = parseInt(res.rank) || 1;
       var cls = idx === 1 ? 'w1' : idx === 2 ? 'w2' : '';
       card.className = 'rc ' + cls;
-      card[H] = '<div class="em">' + (res.emoji || '🎁') + '</div><h2>🎉 축하합니다!</h2><div class="pn">' + res.rank + ' — ' + res.name + '</div><div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div><p>부스 스태프에게 보여주세요.</p><button class="cbtn" id="cBtn">확인</button>';
+      card[H] = '<div class="em">' + (res.emoji || '🎁') + '</div><h2>🎉 축하합니다!</h2><div class="pn">' + res.rank + ' — ' + res.name + '</div><div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div>' + instaHtml() + '<button class="cbtn" id="cBtn">확인</button>';
       fireConfetti();
     }
 
     ov.classList.add('on');
     setTimeout(function() {
+      bindInstaLink();
       $('cBtn').onclick = function() { ov.classList.remove('on'); init(); };
     }, 50);
   }
