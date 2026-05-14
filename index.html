@@ -20,16 +20,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 /* Prize List */
 .prize-list{margin:0 0 8px;padding:0}
-.prize-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-.prize-left{display:flex;align-items:center;gap:12px}
-.prize-emoji{font-size:28px}
-.prize-rank{font-size:13px;font-weight:700;color:var(--ac)}
-.prize-name{font-size:13px;color:var(--dim);margin-top:2px}
+.prize-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.prize-left{display:flex;align-items:center;gap:10px}
+.prize-emoji{font-size:22px}
+.prize-rank{font-size:12px;font-weight:700;color:var(--ac)}
+.prize-name{font-size:12px;color:var(--dim);margin-top:1px}
 .prize-remain{text-align:right}
-.prize-count{font-size:16px;font-weight:700}
+.prize-count{font-size:14px;font-weight:700}
 .prize-count.z{color:var(--ac)}
-.prize-label{font-size:10px;color:var(--dim);margin-top:2px}
-.prize-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:12px}
+.prize-label{font-size:9px;color:var(--dim);margin-top:1px}
+.prize-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:8px}
 
 /* Draw Section */
 .draw-sec{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 0}
@@ -348,7 +348,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
     if (res.type === 'miss') {
       card.className = 'rc';
-      card[H] = '<div class="em">😅</div><h2>아쉽지만 다음 기회에!</h2><p>이번엔 아쉽게 당첨되지 않았어요.<br>팔로우하고 다음 이벤트 소식 받아보세요!</p>' + instaHtml() + '<button class="cbtn" id="cBtn">확인</button>';
+      card[H] = '<div class="em">😅</div><h2>아쉽지만 다음 기회에!</h2><p>이번엔 아쉽게 당첨되지 않았어요.<br>다른 자전거에 붙은 QR로 다시 한번 도전해보세요!</p>' + instaHtml() + '<button class="cbtn" id="cBtn">확인</button>';
     } else {
       var idx = parseInt(res.rank) || 1;
       var cls = idx === 1 ? 'w1' : idx === 2 ? 'w2' : '';
