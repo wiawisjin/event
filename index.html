@@ -18,7 +18,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .hd h1 span{background:linear-gradient(135deg,var(--ac),#ff6b8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hd .sub{font-size:14px;color:var(--dim)}
 
-/* Prize List - compact */
 .prize-list{margin:0 0 4px}
 .prize-card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
 .prize-left{display:flex;align-items:center;gap:10px}
@@ -31,7 +30,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .prize-label{font-size:9px;color:var(--dim);margin-top:1px}
 .prize-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:8px}
 
-/* Draw Section */
 .draw-sec{display:flex;flex-direction:column;align-items:center;padding:20px 0}
 .draw-btn{position:relative;width:200px;height:200px;border-radius:50%;border:2px solid var(--ac);background:radial-gradient(circle at 40% 35%,#1f1f1f,#0e0e0e);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;user-select:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);animation:btnPulse 2s ease-in-out infinite}
 .draw-btn:active{transform:scale(.94)}
@@ -39,26 +37,19 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .draw-btn .lbl{font-size:16px;font-weight:800;letter-spacing:2px}
 .draw-btn .slbl{font-size:11px;color:var(--dim)}
 .draw-btn::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(230,57,86,.15);animation:ring 2.5s ease-out infinite}
-
-/* 버튼 펄스 — 눈에 띄게 */
 @keyframes btnPulse{0%,100%{box-shadow:0 0 40px var(--acg),inset 0 0 40px rgba(230,57,86,.05);transform:scale(1)}50%{box-shadow:0 0 60px var(--acg),0 0 90px rgba(230,57,86,.12);transform:scale(1.04)}}
 @keyframes ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.2);opacity:0}}
-
-/* Spin: 무한 루프 */
 .draw-btn.spin{animation:spinLoop .8s linear infinite!important;box-shadow:0 0 60px var(--acg)}
 .draw-btn.spin::after{display:none}
 @keyframes spinLoop{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .draw-btn.spin-end{animation:spinEnd .6s cubic-bezier(.15,0,.4,1) forwards!important}
 @keyframes spinEnd{from{transform:rotate(0) scale(.9)}to{transform:rotate(180deg) scale(1)}}
-
 .hint{margin-top:16px;font-size:13px;color:var(--dim);text-align:center}
 
-/* Loading */
 .loading{flex:1;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dim)}
 .loading::after{content:'';width:24px;height:24px;border:2px solid var(--bd);border-top-color:var(--ac);border-radius:50%;margin-left:12px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Overlay */
 .ov{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:24px}
 .ov.on{display:flex}
 .rc{width:100%;max-width:380px;background:var(--sf);border:1px solid var(--bd);border-radius:24px;padding:40px 28px;text-align:center;animation:ri .5s cubic-bezier(.34,1.56,.64,1)}
@@ -78,31 +69,34 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .claim-code{font-size:24px;font-weight:800;letter-spacing:3px;color:var(--ac);font-variant-numeric:tabular-nums}
 .cbtn{display:inline-block;padding:14px 40px;background:var(--ac);color:#fff;font-size:15px;font-weight:700;border:none;border-radius:100px;cursor:pointer;font-family:inherit;transition:transform .2s}
 .cbtn:active{transform:scale(.96)}
+
+/* 인스타 기본 */
 .ig{display:flex;align-items:center;gap:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;padding:14px 18px;margin-bottom:16px;text-decoration:none;color:var(--tx);transition:border-color .2s}
 .ig:hover{border-color:var(--ac)}
 .ig-i{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .ig b{font-size:15px;display:block}
 .ig small{font-size:12px;color:var(--dim);margin-top:2px;display:block}
+/* 인스타 강조 (당첨 화면용) */
+.ig-big{border-color:var(--ac);background:linear-gradient(135deg,rgba(230,57,86,.08),rgba(188,24,136,.08));padding:18px 20px;margin-bottom:20px}
+.ig-big .ig-i{width:52px;height:52px;font-size:26px;border-radius:14px}
+.ig-big b{font-size:17px}
+.ig-big small{font-size:13px;color:var(--tx);opacity:.8}
 
-/* Cooldown */
 .cd{text-align:center;padding:40px 0}
 .cd .lk{font-size:48px;opacity:.6}
 .cd h3{font-size:20px;font-weight:700;margin:16px 0 8px}
 .cd p{font-size:14px;color:var(--dim);line-height:1.6}
 .tm{display:inline-block;margin-top:16px;padding:10px 24px;background:var(--sf);border:1px solid var(--bd);border-radius:100px;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:2px}
 
-/* No-bike / Closed */
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 0}
 .nb h3{font-size:18px;font-weight:700;margin:16px 0 8px}
 .nb p{font-size:14px;color:var(--dim);line-height:1.6}
 
-/* Error */
 .err{text-align:center;padding:40px 0}
 .err h3{font-size:18px;font-weight:700;margin:16px 0 8px}
 .err p{font-size:14px;color:var(--dim);line-height:1.6;margin-bottom:20px}
 .retry-btn{padding:12px 32px;background:var(--sf);border:1px solid var(--bd);border-radius:100px;color:var(--tx);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
 
-/* Admin */
 .adm{display:none;margin-top:24px}
 .adm.on{display:block}
 .adm-card{background:var(--sf);border:1px solid rgba(230,57,86,.3);border-radius:16px;padding:24px}
@@ -119,7 +113,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .adm-log{margin-top:12px;max-height:200px;overflow-y:auto;font-size:11px;color:var(--dim);line-height:1.8;padding:12px;background:var(--bg);border-radius:10px}
 .adm-refresh{margin-top:12px;width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 
-/* Keyword */
 .kw-ov{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);padding:24px}
 .kw-ov.on{display:flex}
 .kw-box{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:32px 24px;text-align:center;width:100%;max-width:320px}
@@ -184,7 +177,12 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   function getInstaUrl(){var ua=navigator.userAgent||'';if(/iPhone|iPad|iPod/i.test(ua))return'instagram://user?username='+INSTA_USER;if(/Android/i.test(ua))return'intent://www.instagram.com/'+INSTA_USER+'/#Intent;package=com.instagram.android;scheme=https;end';return'https://www.instagram.com/'+INSTA_USER+'/'}
   var instaUrl=getInstaUrl(),instaFallback='https://www.instagram.com/'+INSTA_USER+'/';
   function handleInstaClick(e){var ua=navigator.userAgent||'';if(/iPhone|iPad|iPod|Android/i.test(ua)){e.preventDefault();var t=Date.now();window.location.href=instaUrl;setTimeout(function(){if(Date.now()-t<2000)window.location.href=instaFallback},1500)}}
-  function instaHtml(){return'<a href="'+instaFallback+'" target="_blank" class="ig" id="igLink"><div class="ig-i">📸</div><div><b>@'+INSTA_USER+'</b><small>팔로우하고 이벤트 소식 받기 →</small></div></a>'}
+  function instaHtml(prominent){
+    if(prominent){
+      return'<a href="'+instaFallback+'" target="_blank" class="ig ig-big" id="igLink"><div class="ig-i">📸</div><div><b>@'+INSTA_USER+'</b><small>팔로우하면 다음 이벤트 소식을 받을 수 있어요!</small></div></a>';
+    }
+    return'<a href="'+instaFallback+'" target="_blank" class="ig" id="igLink"><div class="ig-i">📸</div><div><b>@'+INSTA_USER+'</b><small>팔로우하고 이벤트 소식 받기 →</small></div></a>';
+  }
   function bindInstaLink(){var el=$('igLink');if(el)el.addEventListener('click',handleInstaClick)}
 
   /* ── URL 파라미터 ── */
@@ -227,9 +225,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         cachedPrizes=data.prizes||[];
         if(data.closed){showClosed();return}
         if(!data.canPlay){showCooldown(data.remainSec);return}
+
+        // 당첨 이중 체크 (서버 + localStorage)
+        var alreadyWon=data.hasMajorWin||localStorage.getItem('wdraw_major_win')==='Y';
+        if(alreadyWon){showAlreadyWon();return}
+
         showDraw();
       })
       .catch(function(){showError('서버에 연결할 수 없습니다.')});
+  }
+
+  /* ── 이미 당첨된 사람 화면 ── */
+  function showAlreadyWon(){
+    mainEl[H]='<div class="nb"><div style="font-size:48px">🎉</div><h3>이미 경품에 당첨되셨습니다!</h3><p>부스에서 수령 코드를 보여주시고<br>경품을 받아가세요.</p>'+instaHtml(true)+'</div>';
+    setTimeout(function(){bindInstaLink()},50);
   }
 
   /* ── 추첨 화면 + 자동 스크롤 ── */
@@ -257,6 +266,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             if(!data.success){
               if(data.reason==='cooldown')showCooldown(data.remainSec);
               else if(data.reason==='closed')showClosed();
+              else if(data.reason==='already_won')showAlreadyWon();
               else showError('추첨할 수 없습니다.');
               return;
             }
@@ -271,6 +281,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   function showResult(res){
     var ov=$('overlay'),card=$('resCard');
 
+    // 당첨 시 localStorage 차단 기록
+    if(res.type==='win'){
+      localStorage.setItem('wdraw_major_win','Y');
+    }
+
     if(res.type==='miss'){
       card.className='rc';
       card[H]='<div class="em">😅</div><h2>아쉽지만 다음 기회에!</h2><p>다른 자전거에 붙은 QR로<br>다시 한번 도전해보세요!</p>'+instaHtml()+'<button class="cbtn" id="cBtn">확인</button>';
@@ -282,7 +297,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         claimHtml='<div class="claim-box"><div class="claim-label">수령 코드</div><div class="claim-code">'+res.claimCode+'</div></div>';
       }
       card.className='rc '+cls;
-      card[H]='<div class="em">'+(res.emoji||'🎁')+'</div><h2>🎉 축하합니다!</h2><div class="pn">'+res.rank+' — '+res.name+'</div>'+claimHtml+'<div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div>'+instaHtml()+'<button class="cbtn" id="cBtn">확인</button>';
+      card[H]='<div class="em">'+(res.emoji||'🎁')+'</div><h2>🎉 축하합니다!</h2>'+instaHtml(true)+'<div class="pn">'+res.rank+' — '+res.name+'</div>'+claimHtml+'<div class="gb"><p>📍 WIAWIS 부스에서 이 화면을 보여주시고<br>경품을 수령해주세요!</p></div><button class="cbtn" id="cBtn">확인</button>';
       fireConfetti();
     }
 
@@ -345,7 +360,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     apiGet({action:'status'}).then(function(data){
       if(data.error){$('admPrizes')[H]='<div style="color:var(--ac)">오류: '+data.error+'</div>';return}
       var html='';
-      if(data.settings){html+='<div style="font-size:12px;color:var(--dim);margin-bottom:12px">운영: '+data.settings.startTime+' ~ '+data.settings.endTime+'</div>'}
+      if(data.settings){html+='<div style="font-size:12px;color:var(--dim);margin-bottom:12px">운영: '+data.settings.startTime+' ~ '+data.settings.endTime+(data.settings.pityCount?' | 보장: '+data.settings.pityCount+'회':'')+'</div>'}
       for(var i=0;i<data.prizes.length;i++){var p=data.prizes[i];
         html+='<div class="adm-row"><div><div class="adm-name">'+p.emoji+' '+p.rank+'</div><div class="adm-sub">'+p.name+' (확률 '+p.prob+'%)</div></div><div class="adm-nums"><div class="adm-stock'+(p.remaining===0?' z':'')+'">'+p.remaining+'/'+p.stock+'</div><div class="adm-detail">소모 '+p.consumed+'개</div></div></div>'}
       $('admPrizes')[H]=html;
