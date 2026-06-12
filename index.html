@@ -228,16 +228,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
         // 당첨 이중 체크 (서버 + localStorage)
         var alreadyWon=data.hasMajorWin||localStorage.getItem('wdraw_major_win')==='Y';
-        if(alreadyWon){showAlreadyWon();return}
+        if(alreadyWon){showAlreadyWon(data.prevWin);return}
 
         showDraw();
       })
       .catch(function(){showError('서버에 연결할 수 없습니다.')});
   }
 
-  /* ── 이미 당첨된 사람 화면 ── */
-  function showAlreadyWon(){
-    mainEl[H]='<div class="nb"><div style="font-size:48px">🎉</div><h3>이미 경품에 당첨되셨습니다!</h3><p>부스에서 수령 코드를 보여주시고<br>경품을 받아가세요.</p>'+instaHtml(true)+'</div>';
+  /* ── 이미 당첨된 사람 화면 (흑백 톤, 이모지+인스타만 컬러) ── */
+  function showAlreadyWon(prevWin){
+    var prevHtml='';
+    if(prevWin&&prevWin.name){
+      prevHtml='<div style="background:rgba(255,255,255,.03);border:1px solid #222;border-radius:14px;padding:16px;margin:16px 0"><div style="font-size:11px;color:#555;margin-bottom:6px">이전 당첨 내역</div><div style="font-size:18px;font-weight:700;color:#666">'+prevWin.result+'</div><div style="font-size:15px;color:#555;margin-top:4px">'+prevWin.name+'</div>'+(prevWin.claimCode?'<div style="margin-top:10px;padding:10px;background:#111;border:1px dashed #333;border-radius:10px;font-size:18px;font-weight:800;letter-spacing:2px;color:#555;text-align:center">'+prevWin.claimCode+'</div>':'')+'</div>';
+    }
+    mainEl[H]='<div class="nb"><div style="font-size:48px;filter:grayscale(1) brightness(.7)">🎉</div><h3 style="color:#666">이미 경품에 당첨되셨습니다!</h3><p style="color:#444">부스에서 수령 코드를 보여주시고<br>경품을 받아가세요.</p>'+prevHtml+instaHtml(true)+'</div>';
     setTimeout(function(){bindInstaLink()},50);
   }
 
